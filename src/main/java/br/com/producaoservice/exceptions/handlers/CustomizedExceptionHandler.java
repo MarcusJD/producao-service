@@ -5,6 +5,8 @@ import br.com.producaoservice.exceptions.NoContentException;
 import br.com.producaoservice.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -19,6 +21,20 @@ public class CustomizedExceptionHandler {
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception exception, WebRequest request) {
         String message = getMessageOrDefault(exception, "Ocorreu um erro no servidor");
         return buildExceptionResponse(message, request.getDescription(false), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        String message = bindingResult.getFieldError().getDefaultMessage();
+
+        ExceptionResponse response = ExceptionResponse.builder()
+                .dateTime(LocalDateTime.now())
+                .message(message)
+                .details(bindingResult.toString())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NotFoundException.class)
