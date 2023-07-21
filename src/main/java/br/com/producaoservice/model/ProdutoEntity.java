@@ -41,7 +41,7 @@ public class ProdutoEntity {
     @Column(name = "COR")
     private String cor;
 
-    @Lob
+    @Lob @Basic(fetch = FetchType.LAZY)
     @Column(name = "IMAGEM")
     private byte[] imagem;
 }

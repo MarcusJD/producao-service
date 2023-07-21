@@ -1,7 +1,5 @@
 package br.com.producaoservice.dto;
 
-import br.com.producaoservice.mappers.ProdutoMapper;
-import br.com.producaoservice.model.ProdutoEntity;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
