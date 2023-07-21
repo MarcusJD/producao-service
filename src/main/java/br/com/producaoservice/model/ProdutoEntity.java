@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigInteger;
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +23,7 @@ public class ProdutoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CODIGO")
-    private Long codigo;
+    private BigInteger codigo;
 
     @NotNull
     @Size(max = 100)
@@ -44,4 +47,8 @@ public class ProdutoEntity {
     @Lob @Basic(fetch = FetchType.LAZY)
     @Column(name = "IMAGEM")
     private byte[] imagem;
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidoProducaoEntity> pedidos;
+
 }

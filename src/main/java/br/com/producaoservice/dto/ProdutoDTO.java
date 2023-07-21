@@ -7,13 +7,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigInteger;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 public class ProdutoDTO {
 
-    private Long codigo;
+    private BigInteger codigo;
 
     @Size(max = 100, message = "O tamnaho máximo do campo nome é de {max}")
     @NotNull(message = "Nome do produto é obrigatório")
