@@ -39,6 +39,12 @@ public class ProdutoController {
         return produtoService.updateProduto(produtoDto, imagem);
     }
 
+
+    @GetMapping("/{codigoProduto}")
+    public ResponseEntity<ProdutoDTO> getProdutoByCodigo(@PathVariable("codigoProduto") BigInteger codigoProduto) {
+        return produtoService.getProdutoByCodigo(codigoProduto);
+    }
+
     @GetMapping
     public ResponseEntity<Page<ProdutoDTO>> getProdutosPageable(Pageable pageable) {
         return produtoService.getProdutosPageable(pageable);

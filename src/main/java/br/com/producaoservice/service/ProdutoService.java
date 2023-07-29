@@ -15,6 +15,8 @@ public interface ProdutoService {
 
     public ResponseEntity<ProdutoDTO> updateProduto(ProdutoDTO produtoDTO, MultipartFile imagem) throws IOException;
 
+    public ResponseEntity<ProdutoDTO> getProdutoByCodigo(BigInteger codigoProduto);
+
     public ResponseEntity<Page<ProdutoDTO>> getProdutosPageable(Pageable pageable);
 
     public ResponseEntity<Void> deleteProdutoById(BigInteger id);

@@ -2,6 +2,7 @@ package br.com.producaoservice.service.impl;
 
 import br.com.producaoservice.dto.ProdutoDTO;
 import br.com.producaoservice.exceptions.BadRequestException;
+import br.com.producaoservice.exceptions.NotFoundException;
 import br.com.producaoservice.mappers.ProdutoMapper;
 import br.com.producaoservice.model.ProdutoEntity;
 import br.com.producaoservice.repository.ProdutoRepository;
@@ -51,6 +52,13 @@ public class ProdutoServiceImpl implements ProdutoService {
         ProdutoEntity entity = ProdutoMapper.INSTANCE.dtoToEntity(produtoDTO);
         ProdutoEntity updatedEntity = produtoRepository.save(entity);
         return ResponseEntity.ok(ProdutoMapper.INSTANCE.entityToDto(updatedEntity));
+    }
+
+    @Override
+    public ResponseEntity<ProdutoDTO> getProdutoByCodigo(BigInteger codigoProduto) {
+        ProdutoEntity entity = produtoRepository.findById(codigoProduto).orElseThrow(NotFoundException::new);
+        ProdutoDTO dto = ProdutoMapper.INSTANCE.entityToDto(entity);
+        return ResponseEntity.ok().body(dto);
     }
 
     @Override
