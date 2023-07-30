@@ -48,7 +48,4 @@ public class ProdutoEntity {
     @Column(name = "IMAGEM")
     private byte[] imagem;
 
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PedidoProducaoEntity> pedidos;
-
 }
