@@ -3,11 +3,15 @@ package br.com.producaoservice.service.impl;
 import br.com.producaoservice.dto.ProdutoDTO;
 import br.com.producaoservice.exceptions.BadRequestException;
 import br.com.producaoservice.exceptions.NotFoundException;
+import br.com.producaoservice.infra.mqueue.PedidoProducaoPublisher;
+import br.com.producaoservice.infra.mqueue.model.PedidoProducaoMQ;
 import br.com.producaoservice.mappers.ProdutoMapper;
 import br.com.producaoservice.model.ProdutoEntity;
 import br.com.producaoservice.repository.ProdutoRepository;
 import br.com.producaoservice.service.ProdutoService;
 import br.com.producaoservice.util.FileUtil;
+import jakarta.ws.rs.InternalServerErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +27,13 @@ import java.math.BigInteger;
 public class ProdutoServiceImpl implements ProdutoService {
 
     private ProdutoRepository produtoRepository;
+    
+    private PedidoProducaoPublisher pedidoProducaoPublisher;
 
     @Autowired
-    public ProdutoServiceImpl (ProdutoRepository produtoRepository) {
+    public ProdutoServiceImpl (ProdutoRepository produtoRepository, PedidoProducaoPublisher pedidoProducaoPublisher) {
         this.produtoRepository = produtoRepository;
+        this.pedidoProducaoPublisher = pedidoProducaoPublisher;
     }
 
     @Override
@@ -82,4 +89,14 @@ public class ProdutoServiceImpl implements ProdutoService {
             throw new BadRequestException("A imagem deve possuir no máximo 5MB.");
         }
     }
+
+	@Override
+	public ResponseEntity<Void> createPedidoProducao(PedidoProducaoMQ pedidoProducao) {
+		try {
+ 			return pedidoProducaoPublisher.publishPedidoProducao(pedidoProducao);
+		} catch (Exception e) {
+			e.printStackTrace();
+		    throw new InternalServerErrorException("Erro ao criar pedido de produção");
+		}
+	}
 }

@@ -1,6 +1,7 @@
 package br.com.producaoservice.v1.controller;
 
 import br.com.producaoservice.dto.ProdutoDTO;
+import br.com.producaoservice.infra.mqueue.model.PedidoProducaoMQ;
 import br.com.producaoservice.service.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,4 +55,9 @@ public class ProdutoController {
     public ResponseEntity<Void> deleteProdutoById(BigInteger id) {
         return produtoService.deleteProdutoById(id);
     }
+    
+    @PostMapping("/pedido-producao")
+    public ResponseEntity<Void> createPedidoProducao(@RequestBody PedidoProducaoMQ pedidoProducao) {
+        return produtoService.createPedidoProducao(pedidoProducao);
+     }
 }

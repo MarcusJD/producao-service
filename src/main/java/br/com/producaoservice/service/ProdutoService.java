@@ -1,6 +1,8 @@
 package br.com.producaoservice.service;
 
 import br.com.producaoservice.dto.ProdutoDTO;
+import br.com.producaoservice.infra.mqueue.model.PedidoProducaoMQ;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -21,5 +23,6 @@ public interface ProdutoService {
 
     public ResponseEntity<Void> deleteProdutoById(BigInteger id);
 
+    public ResponseEntity<Void> createPedidoProducao(PedidoProducaoMQ pedidoProducao);
 
 }
