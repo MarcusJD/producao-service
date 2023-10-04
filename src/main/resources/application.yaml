@@ -7,6 +7,11 @@ eureka:
 spring:
   application:
     name: producao-service
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   cloud:
     config:
       enabled: false
@@ -19,3 +24,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+mq:
+  queues:
+    create-pedido-producao: create-pedido-producao
+  exchanges:
+    pedido-producao-ex: ped.prod.ex
+  keys:
+    create-pedido-producao-key: ped.prod.create
