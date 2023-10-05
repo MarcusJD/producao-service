@@ -7,14 +7,11 @@ eureka:
 spring:
   application:
     name: producao-service
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+  config:
+    import: optional:configserver:http://localhost:8888/
   cloud:
     config:
-      enabled: false
+      profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/producao_service?useTimeZone=true&serverTimezone=UTC
