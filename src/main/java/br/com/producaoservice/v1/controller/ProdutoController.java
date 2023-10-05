@@ -4,7 +4,6 @@ import br.com.producaoservice.dto.ProdutoDTO;
 import br.com.producaoservice.infra.mqueue.model.PedidoProducaoMQ;
 import br.com.producaoservice.service.ProdutoService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -21,7 +20,6 @@ public class ProdutoController {
 
     private ProdutoService produtoService;
 
-    @Autowired
     public ProdutoController(ProdutoService produtoService) {
         this.produtoService = produtoService;
     }

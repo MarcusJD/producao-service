@@ -12,7 +12,6 @@ import br.com.producaoservice.service.ProdutoService;
 import br.com.producaoservice.util.FileUtil;
 import jakarta.ws.rs.InternalServerErrorException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,6 @@ public class ProdutoServiceImpl implements ProdutoService {
     
     private PedidoProducaoPublisher pedidoProducaoPublisher;
 
-    @Autowired
     public ProdutoServiceImpl (ProdutoRepository produtoRepository, PedidoProducaoPublisher pedidoProducaoPublisher) {
         this.produtoRepository = produtoRepository;
         this.pedidoProducaoPublisher = pedidoProducaoPublisher;
@@ -39,8 +37,8 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Override
     public ResponseEntity<ProdutoDTO> createProduto(ProdutoDTO produtoDTO, MultipartFile imagem) throws IOException {
         if(imagem != null) {
-            validateImage(imagem);
-            produtoDTO.setImagem(imagem.getBytes());
+            FileUtil.validateImage(imagem);
+        	produtoDTO.setImagem(imagem.getBytes());
         }
         ProdutoEntity entity = ProdutoMapper.INSTANCE.dtoToEntity(produtoDTO);
         ProdutoEntity savedEntity = produtoRepository.save(entity);
@@ -50,8 +48,8 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Override
     public ResponseEntity<ProdutoDTO> updateProduto(ProdutoDTO produtoDTO, MultipartFile imagem) throws IOException {
         if(imagem != null) {
-            validateImage(imagem);
-            produtoDTO.setImagem(imagem.getBytes());
+            FileUtil.validateImage(imagem);
+        	produtoDTO.setImagem(imagem.getBytes());
         }
         if(produtoDTO.getCodigo() == null) {
             throw new BadRequestException("Código do produto não informado.");
@@ -79,15 +77,6 @@ public class ProdutoServiceImpl implements ProdutoService {
     public ResponseEntity<Void> deleteProdutoById(BigInteger id) {
         produtoRepository.deleteById(id);
         return ResponseEntity.ok().build();
-    }
-
-    private void validateImage(MultipartFile imagem) {
-        if (!imagem.getContentType().startsWith("image/")) {
-            throw new BadRequestException("O arquivo enviado não é uma imagem.");
-        }
-        if(!FileUtil.isImageSizeValid(imagem)) {
-            throw new BadRequestException("A imagem deve possuir no máximo 5MB.");
-        }
     }
 
 	@Override
